@@ -2,6 +2,26 @@
 
 This project implements and compares a hybrid quantum-classical neural network with a purely classical neural network for classifying images of digits 0 and 1 from the MNIST dataset.
 
+## Project Structure
+
+```
+C:\Users\jooth\Desktop\Projects\Quantum-Classical Neural Network/
+├── .git/
+├── .gitignore
+├── classical_baseline.py
+├── classical_training_loss.png
+├── data/
+│   └── MNIST/
+│       └── raw/
+├── data_setup.py
+├── hybrid_model.py
+├── README.md
+├── requirements.txt
+├── train.py
+├── training_loss.png
+└── __pycache__/
+```
+
 ## Dataset
 
 The project uses the MNIST dataset, which is automatically downloaded and preprocessed. The dataset is filtered to only include images of digits 0 and 1. The images are resized to 8x8 pixels and flattened into a 64-element vector.
@@ -51,3 +71,7 @@ Running the training scripts will produce the following files:
 
 -   `training_loss.png`: A plot of the training loss over epochs for the hybrid model.
 -   `classical_training_loss.png`: A plot of the training loss over epochs for the classical model.
+
+## Results
+
+The hybrid model achieves an accuracy of XX% on the test set, while the classical baseline model achieves an accuracy of YY%. The training loss curves show that both models converge, but the hybrid model exhibits [mention any interesting observations, e.g., faster convergence, more stable training, etc.].
