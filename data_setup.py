@@ -4,11 +4,12 @@ from torchvision import transforms
 from sklearn.model_selection import train_test_split
 import numpy as np
 
-def load_data(test_split=0.2, random_seed=42):
+def load_data(dataset_name='MNIST', test_split=0.2, random_seed=42):
     """
-    Loads, preprocesses, and splits the MNIST dataset for digits 0 and 1.
+    Loads, preprocesses, and splits the specified dataset.
 
     Args:
+        dataset_name (str): The name of the dataset to load ('MNIST' or 'FashionMNIST').
         test_split (float): The proportion of the dataset to reserve for testing.
         random_seed (int): Seed for reproducibility.
 
@@ -17,10 +18,6 @@ def load_data(test_split=0.2, random_seed=42):
         x_train, x_test, y_train, y_test
     """
     # Transformations to apply to the images
-    # 1. Resize to 8x8
-    # 2. Convert to tensor
-    # 3. Normalize to [0, 1]
-    # 4. Flatten to a 64-element vector
     transform = transforms.Compose([
         transforms.Resize((8, 8)),
         transforms.ToTensor(),
@@ -29,23 +26,29 @@ def load_data(test_split=0.2, random_seed=42):
     ])
 
     # Download and transform the training and test data
-    train_dataset = torchvision.datasets.MNIST(
-        root="./data", train=True, download=True, transform=transform
-    )
-    test_dataset = torchvision.datasets.MNIST(
-        root="./data", train=False, download=True, transform=transform
-    )
+    if dataset_name == 'MNIST':
+        train_dataset = torchvision.datasets.MNIST(
+            root="./data", train=True, download=True, transform=transform
+        )
+        test_dataset = torchvision.datasets.MNIST(
+            root="./data", train=False, download=True, transform=transform
+        )
+    elif dataset_name == 'FashionMNIST':
+        train_dataset = torchvision.datasets.FashionMNIST(
+            root="./data", train=True, download=True, transform=transform
+        )
+        test_dataset = torchvision.datasets.FashionMNIST(
+            root="./data", train=False, download=True, transform=transform
+        )
+    else:
+        raise ValueError("Dataset not supported. Please choose 'MNIST' or 'FashionMNIST'.")
 
-    # Combine datasets to filter for 0s and 1s
+    # Combine datasets
     full_dataset = torch.utils.data.ConcatDataset([train_dataset, test_dataset])
 
-    # Filter for digits 0 and 1
-    indices = [i for i, (img, label) in enumerate(full_dataset) if label in [0, 1]]
-    filtered_dataset = torch.utils.data.Subset(full_dataset, indices)
-
     # Extract data and labels
-    X = torch.stack([img for img, label in filtered_dataset])
-    y = torch.tensor([label for img, label in filtered_dataset])
+    X = torch.stack([img for img, label in full_dataset])
+    y = torch.tensor([label for img, label in full_dataset])
 
     # Split the data
     x_train, x_test, y_train, y_test = train_test_split(

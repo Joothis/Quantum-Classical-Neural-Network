@@ -20,7 +20,7 @@ class ClassicalModel(nn.Module):
         self.layer1 = nn.Linear(64, 16)
         self.relu = nn.ReLU()
         self.layer2 = nn.Linear(16, 8)
-        self.output_layer = nn.Linear(8, 2) # 2 classes (0, 1)
+        self.output_layer = nn.Linear(8, 10) # 10 classes (0-9)
         self.log_softmax = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
